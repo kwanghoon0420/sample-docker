@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    container_name: frankenphp
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    volumes:
+      - ./app/laravel:/app
+      - ./app/Caddyfile:/etc/caddy/Caddyfile
+      - ./app/.bashrc:/root/.bashrc
+      - ./app/php.ini:/usr/local/etc/php/php.ini
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: dev_db
+    volumes:
+      - ./db/var/lib/mysql:/var/lib/mysql
+    restart: unless-stopped
