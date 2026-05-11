@@ -6,10 +6,10 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
     volumes:
-      - ./app/laravel:/app
-      - ./app/Caddyfile:/etc/caddy/Caddyfile
-      - ./app/.bashrc:/root/.bashrc
-      - ./app/php.ini:/usr/local/etc/php/php.ini
+      - /home/sample-docker/app/laravel:/app
+      - /home/sample-docker/app/Caddyfile:/etc/caddy/Caddyfile
+      - /home/sample-docker/app/.bashrc:/root/.bashrc
+      - /home/sample-docker/app/php.ini:/usr/local/etc/php/php.ini
     restart: unless-stopped
     depends_on:
       - db
@@ -21,5 +21,5 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: dev_db
     volumes:
-      - ./db/var/lib/mysql:/var/lib/mysql
+      - /home/sample-docker/db/var/lib/mysql:/var/lib/mysql
     restart: unless-stopped
