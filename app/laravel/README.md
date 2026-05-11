@@ -1,59 +1,63 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 포인트 기반 이커머스 샘플 (Laravel)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+포트폴리오용으로 정리한 **상품 주문·포인트 결제·주문 상태(취소/확정)** 흐름을 포함한 Laravel 웹 애플리케이션입니다.
 
-## About Laravel
+## 기술 스택
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **PHP** 8.2+
+- **Laravel** 12
+- **인증**: Laravel Breeze
+- **관리 UI**: Filament 3 (`/admin` — 포인트/로그 등 리소스)
+- **프론트**: Blade + Tailwind(DaisyUI 등 기존 구성 유지)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 주요 기능
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **상품**: 목록·상세, 재고 기반 주문 가능 여부
+- **주문**: 포인트 사용 주문, 상태(`결제대기` → `결제완료` → `거래완료` / 취소·환불)
+- **마이페이지**: 주문 내역, 취소·확정(조건 충족 시)
+- **관리자 영역 (`/admin2`)**: 주문 목록, 사용자와 동일한 **취소·확정** 유스케이스 호출 (접근은 관리자만)
 
-## Learning Laravel
+## 아키텍처 / 디자인 패턴 요약
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+| 구분 | 역할 |
+|------|------|
+| **Application Service** | `App\Services\Order\OrderApplicationService` — 유스케이스(주문/취소/확정) 조율, 트랜잭션 경계 |
+| **Command (입력 DTO)** | `App\Services\Order\Commands\*` — 유스케이스별 입력 묶음 (Place / Cancel / Confirm) |
+| **Domain Entity** | `App\Domains\Entities\*` — 주문·상품·포인트 등 도메인 규칙과 상태 전이 |
+| **Domain Service** | `App\Domains\Services\*` — 예: 포인트 정산 코어(`PointCore`) 등 하위 정산 로직 |
+| **정책 클래스** | `App\Domains\Services\OrderActionPolicy` — 주문 취소/확정 시 “누가 할 수 있는지” (주문자 또는 관리자) |
+| **HTTP 진입** | Controller는 검증·권한(일부 `abort_if`) 후 Application Service 호출 |
+| **관리자 라우트 보호** | `admin2` 그룹에 `Admin2Middleware` — `OrderActionPolicy::isAdmin()` 통과 시만 접근 |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+DDD 용어로 말하면, **애그리거트 단위 규칙은 Entity**, **여러 객체를 묶는 시나리오는 Application Service**, **한 엔티티에 넣기 애매한 정책/정산은 Domain Service** 쪽에 두는 방향으로 정리했습니다.
 
-## Laravel Sponsors
+## 디렉터리 구조 (요약)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+app/
+├── Domains/
+│   ├── Entities/          # 도메인 엔티티 (Order, Product, UserPoint 등)
+│   ├── Services/          # 도메인 서비스 (PointCore, OrderActionPolicy 등)
+│   └── Queries/           # 목록 조회용 쿼리 객체
+├── Services/Order/        # 주문 애플리케이션 서비스 + Commands
+├── Http/
+│   ├── Controllers/       # 웹 진입점
+│   └── Middleware/        # Admin2Middleware 등
+└── Models/                # Eloquent 모델
+```
 
-### Premium Partners
+## 로컬 실행 (참고)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-## Contributing
+DB·캐시 드라이버는 `.env`에 맞게 설정합니다. Docker를 쓰는 경우 프로젝트 루트의 `docker-compose` 등 기존 구성을 따르면 됩니다.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 라이선스
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT (Laravel 기본 스켈레톤과 동일)

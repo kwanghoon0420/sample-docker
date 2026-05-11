@@ -45,6 +45,12 @@
                                 <span class="hidden sm:inline text-sm text-gray-500 dark:text-gray-400">
                                     {{ Auth::user()->name }}님
                                 </span>
+                                @if (\App\Domains\Services\OrderActionPolicy::isAdmin((int) Auth::id()))
+                                    <a href="{{ route('admin.product_list') }}"
+                                       class="px-3 py-2 text-sm font-medium text-white bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 rounded-md">
+                                        관리자
+                                    </a>
+                                @endif
                                 <a href="{{ route('mypage.order.list') }}"
                                    class="px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                                     마이페이지
