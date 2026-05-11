@@ -46,6 +46,36 @@ app/
 └── Models/                # Eloquent 모델
 ```
 
+## 데이터베이스 스키마 요약
+
+마이그레이션 기준으로 도메인 테이블과 역할을 정리했습니다. (Laravel 기본: `cache`, `jobs`, `sessions`, `password_reset_tokens` 등은 생략)
+
+### 개요 관계
+
+- **users** 1 — N **orders** (주문 소유)
+- **products** ← **orders.item_id** (상품 FK는 정수 `item_id`로 연결, 마이그레이션상 FK 제약 없음)
+- **users** 1 — N **points** (상태별 잔액 버킷: 정상 `a` / 사용중 `i` / 잠금 `l`)
+- **users** 1 — N **point_details** (충전·적립 단위 상세, 만료·잔액 추적)
+- **point_changed_logs** — 포인트 총액 변동(충전·적립·사용·환불·만기), `reference_id`로 주문 등과 연계
+- **point_detail_changed_logs** — 상세(`point_details`) 단위 변동, 상위 로그 FK
+
+### 테이블별 요약
+
+| 테이블 | 설명 |
+|--------|------|
+| **users** | 이름, 이메일(유니크), 비밀번호, Breeze용 검증·세션 필드 |
+| **products** | 상품명, 설명, 가격, 재고, **status** `d`임시 · `a`판매중 · `s`품절 · `e`판매종료 · `x`삭제 |
+| **orders** | `order_id`(유니크), `user_id`, `item_id`(상품), 수량, `order_amount` / `paied_amount`, `used_points`, `used_points_changed_log_id`(포인트 사용 로그 연결), `payment_id`, **status** `i`결제대기 · `p`결제완료 · `e`거래완료 · `c`주문취소 · `r`환불완료 |
+| **points** | 사용자별 **status**별 잔액(`remain_amount`): `a`정상 · `i`사용중 · `l`잠금 |
+| **point_details** | 적립 단위 상세: 원금액, 사용액, 잔액, **used_flag** `y`/`n`, **expire_at** |
+| **point_changed_logs** | 변동 전·변동액·변동 후, **type** `c`충전 · `e`적립 · `u`사용 · `r`환불 · `x`만기, `reference_id`, `admin_id`(선택) |
+| **point_detail_changed_logs** | `point_changed_log_id`, `point_detail_id`, **type** `u`/`r`/`x`, 변동액 |
+
+### 금액·식별자
+
+- 금액 컬럼은 주로 **decimal(15,2)**.
+- 주문 비즈니스 키는 **`orders.order_id`** (문자열), PK는 **`orders.id`**.
+
 ## 로컬 실행 (참고)
 
 ```bash
