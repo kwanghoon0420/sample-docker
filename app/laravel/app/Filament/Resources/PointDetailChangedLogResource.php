@@ -68,7 +68,7 @@ class PointDetailChangedLogResource extends Resource
                     ->dateTime('Y-m-d H:i:s')
                     ->sortable()
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])
