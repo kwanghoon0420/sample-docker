@@ -4,10 +4,44 @@
             @csrf
             <input type="hidden" name="product_id" value="{{ $product ? $product->id : '' }}">
 
-            <div><x-laboard.input.basic label1="상품명" value="{{ $product ? $product->name: '' }}" name="name"></x-laboard.input.basic></div>
-            <div><x-laboard.input.basic label1="가격" name="price" value="{{ $product ? $product->price: '' }}" type="number"></x-laboard.input.basic></div>
-            <div><x-laboard.input.basic label1="재고 수량" name="stock" value="{{ $product ? $product->stock: '' }}" type="number"></x-laboard.input.basic></div>
-            <div><x-laboard.input.textarea label1="설명" name="description">{{ $product ? $product->description: '' }}</x-laboard.input.textarea></div>
+            <div class="mb-4">
+                <label class="label" for="name"><span class="label-text">상품명</span></label>
+                <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    value="{{ $product ? $product->name : '' }}"
+                    class="input input-bordered w-full"
+                />
+            </div>
+            <div class="mb-4">
+                <label class="label" for="price"><span class="label-text">가격</span></label>
+                <input
+                    id="price"
+                    type="number"
+                    name="price"
+                    value="{{ $product ? $product->price : '' }}"
+                    class="input input-bordered w-full"
+                />
+            </div>
+            <div class="mb-4">
+                <label class="label" for="stock"><span class="label-text">재고 수량</span></label>
+                <input
+                    id="stock"
+                    type="number"
+                    name="stock"
+                    value="{{ $product ? $product->stock : '' }}"
+                    class="input input-bordered w-full"
+                />
+            </div>
+            <div class="mb-4">
+                <label class="label" for="description"><span class="label-text">설명</span></label>
+                <textarea
+                    id="description"
+                    name="description"
+                    class="textarea textarea-bordered w-full h-96"
+                >{{ $product ? $product->description : '' }}</textarea>
+            </div>
 
             @if ($errors->any())
                 @foreach ($errors->all() as $error)
@@ -17,12 +51,18 @@
                 @endforeach
             @endif
 
-            <div class="grid grid-cols-8">
-                @if($product)
-                    <div class=""><x-laboard.button.basic type="button" class="btn-outline" href="{{ route('admin.product_list') }}">{{ __('BACK')}}</x-laboard.button.green></div>
+            <div class="grid grid-cols-8 gap-2 items-center">
+                @if ($product)
+                    <div>
+                        <a href="{{ route('admin.product_list') }}" class="btn btn-outline">{{ __('BACK') }}</a>
+                    </div>
                 @endif
-                <div class=""><x-laboard.button.basic type="button" class="btn-outline" href="{{ route('admin.product_list') }}">{{ __('LIST')}}</x-laboard.button.green></div>
-                <div class="col-end-9"><x-laboard.button.basic class="btn-success w-full">저장</x-laboard.button.green></div>
+                <div>
+                    <a href="{{ route('admin.product_list') }}" class="btn btn-outline">{{ __('LIST') }}</a>
+                </div>
+                <div class="col-end-9">
+                    <button type="submit" class="btn btn-success w-full">저장</button>
+                </div>
             </div>
         </form>
     </div>
