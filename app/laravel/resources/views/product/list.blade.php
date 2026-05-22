@@ -15,7 +15,7 @@
                                  alt="{{ $product->name }}"
                                  class="group-hover:scale-110 transition-transform duration-500 object-cover w-full h-full" />
 
-                            @if($product->status === 'OUT_OF_STOCK')
+                            @if($product->status === 's' || $product->stock === 0)
                                 <div class="absolute inset-0 bg-black/60 flex items-center justify-center">
                                     <span class="badge badge-error badge-lg font-bold text-white">품절</span>
                                 </div>

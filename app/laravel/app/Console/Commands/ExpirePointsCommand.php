@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use App\Dtos\Point as PointDto;
 use App\Models\PointDetail;
 use Carbon\Carbon;
 use App\Domains\Entities\UserPointEntity;

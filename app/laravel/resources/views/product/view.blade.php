@@ -58,12 +58,14 @@
                     </div>
 
                     <!-- 구매 버튼 -->
-                    <button type="submit" 
-                            class="btn btn-primary btn-lg w-full text-lg shadow-xl shadow-primary/20"
-                            :disabled="userPoint < (quantity * price)">
-                        <span x-show="userPoint >= (quantity * price)">구매하기</span>
-                        <span x-show="userPoint < (quantity * price)">포인트가 부족합니다</span>
-                    </button>
+                    @if($product->status === 'a' && $product->stock > 0)
+                        <button type="submit" 
+                                class="btn btn-primary btn-lg w-full text-lg shadow-xl shadow-primary/20"
+                                :disabled="userPoint < (quantity * price)">
+                            <span x-show="userPoint >= (quantity * price)">구매하기</span>
+                            <span x-show="userPoint < (quantity * price)">포인트가 부족합니다</span>
+                        </button>
+                    @endif
                 </form>
             </div>
         </div>
