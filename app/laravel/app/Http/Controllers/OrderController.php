@@ -52,7 +52,7 @@ class OrderController extends Controller
         abort_if($request->user()->id !== $order->user_id, 403);
 
         $orderApplicationService->cancelOrder(
-            new CancelOrderCommand($order->getKey(), $request->user()->id),
+            new CancelOrderCommand($order->getKey(), $request->user()->id, 0),
         );
 
         return redirect()

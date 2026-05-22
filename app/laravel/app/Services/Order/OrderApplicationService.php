@@ -50,7 +50,7 @@ final class OrderApplicationService
             );
 
             $result = $userPointEntity->use($usedPoints, (string) $orderEntity->model()->order_id);
-            $orderEntity->model()->used_points_changed_log_id = $result['changed_log_id'];
+            $orderEntity->model()->used_points_changed_log_id = $result['changed_log_id']; // 포인트 사용 변동 로그 ID 넣어줌
             $orderEntity->model()->save();
 
             // 결제 확정 처리
@@ -85,7 +85,7 @@ final class OrderApplicationService
 
             $usedPoints = (int) $locked->used_points;
             if ($usedPoints > 0) {
-                $userPointEntity->refund($locked->used_points_changed_log_id);
+                $userPointEntity->setAdminId($command->adminId)->refund($locked->used_points_changed_log_id);
                 $orderEntity->changeStatus('r');
             } else {
                 $orderEntity->changeStatus('c');

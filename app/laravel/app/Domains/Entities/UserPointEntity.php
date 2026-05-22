@@ -19,6 +19,8 @@ class UserPointEntity
     private PointModel $pointModel;
     private PointModel $pointModelIng;
 
+    private int $adminId;
+
     public function __construct(private User $user)
     {
         if($user->exists == false) {
@@ -35,7 +37,19 @@ class UserPointEntity
             }
         }
     }
-    
+
+    public function setAdminId(int $adminId): static
+    {
+        $this->adminId = $adminId;
+
+        return $this;
+    }
+
+    public function getAdminId(): int
+    {
+        return $this->adminId ?? 0;
+    }
+
     public function userModel(): User
     {
         return $this->user;
@@ -82,7 +96,7 @@ class UserPointEntity
         // 유효날짜는 그 날 23:59:59 까지로 설정
         $expireDate = $expireDate->endOfDay();
 
-        $this->add($this->userModel()->id, $amount, $referenceId, 'e', $expireDate);
+        $this->add($this->userModel()->id, $amount, $referenceId, 'e', $expireDate, $this->getAdminId());
     }
 
     /**
@@ -103,7 +117,7 @@ class UserPointEntity
             ->orderBy('created_at', 'asc')
             ->get();
 
-        $result = $this->subtract($this->userModel()->id, $amount, $referenceId, 'u', collect($pointDetailForSub));
+        $result = $this->subtract($this->userModel()->id, $amount, $referenceId, 'u', collect($pointDetailForSub), $this->getAdminId());
 
         // 포인트 차감 후 point 테이블에서 차감한 금액만큼 사용중으로 만든다.
         // 없으면 생성, 있으면 차감한 금액만큼 증가시킨다.
@@ -168,7 +182,8 @@ class UserPointEntity
             $pointChangedLog->changed_amount, 
             $pointChangedLog->before_amount, 
             $pointChangedLog->reference_id, 
-            'r'
+            'r',
+            $this->getAdminId()
         );
 
         // 사용 중인 포인트를 차감하고
@@ -218,7 +233,7 @@ class UserPointEntity
         }
 
         if($pointDetail->expire_at < Carbon::now()) {
-            $this->subtract($this->userModel()->id, $pointDetail->remain_amount, 'expire', 'x', collect([$pointDetail]));
+            $this->subtract($this->userModel()->id, $pointDetail->remain_amount, 'expire', 'x', collect([$pointDetail]), $this->getAdminId());
         }
     }
 }

@@ -23,15 +23,19 @@ class ExpirePointsCommand extends Command
             ->where('expire_at', '<', Carbon::now())
             ->get();
 
+        $count = 0;
         foreach($pointDetails as $pointDetail) {
             try {
                 $userPointEntity = new UserPointEntity(User::find($pointDetail->user_id));
                 $userPointEntity->expire($pointDetail->id);
+                $count++;
             } catch(\Exception $e) {
                 Log::error('포인트 상세내역 만기 처리 중 오류가 발생했습니다. : ' . $e->getMessage(), ['point_detail_id' => $pointDetail->id, 'user_id' => $pointDetail->user_id]);
                 continue;
             }
         }
+
+        $this->info('포인트 상세내역 만기 처리 완료. 총 ' . $count . '건 처리되었습니다.');
 
         return self::SUCCESS;
     }

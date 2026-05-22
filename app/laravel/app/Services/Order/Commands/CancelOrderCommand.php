@@ -10,7 +10,8 @@ namespace App\Services\Order\Commands;
 final readonly class CancelOrderCommand
 {
     public function __construct(
-        public int|string $orderId,
+        public string $orderId,
         public int $actorUserId,
+        public int $adminId,
     ) {}
 }

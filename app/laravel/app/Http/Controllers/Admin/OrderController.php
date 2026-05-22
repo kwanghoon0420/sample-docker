@@ -25,7 +25,7 @@ class OrderController extends Controller
     public function cancelOrder(Request $request, Order $order, OrderApplicationService $orderApplicationService)
     {
         $orderApplicationService->cancelOrder(
-            new CancelOrderCommand($order->getKey(), $request->user()->id),
+            new CancelOrderCommand($order->getKey(), $request->user()->id, $request->user()->id),
         );
 
         return redirect()

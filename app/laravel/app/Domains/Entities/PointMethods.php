@@ -17,7 +17,7 @@ trait PointMethods
     /**
      * 포인트를 적립하고 사용자 총 포인트와 상세 내역을 함께 갱신한다.
      */
-    private function add(string $userId, string $amount, string $referenceId, string $type, Carbon $expireAt): void
+    private function add(string $userId, string $amount, string $referenceId, string $type, Carbon $expireAt, int $adminId = null): void
     {
         
         $point = PointModel::query()
@@ -41,7 +41,7 @@ trait PointMethods
         }
 
         // 포인트 변동 로그 저장
-        $this->changedLog($userId, $beforeAmount, $amount, $afterAmount, $referenceId, $type);
+        $this->changedLog($userId, $beforeAmount, $amount, $afterAmount, $referenceId, $type, $adminId);
 
         $pointDetail = new PointDetail();
         $pointDetail->user_id = $userId;
@@ -62,7 +62,7 @@ trait PointMethods
      * @param Collection $pointDetailForSub 차감할 포인트 상세 내역을 전달받는다.(포인트를 차감하는 여러 상황에 쓰이기 위함.ex: 포인트 사용, 포인트 만료 등)
      * @return array
      */
-    private function subtract(string $userId, string $amount, string $referenceId, string $type, Collection $pointDetailForSub): array
+    private function subtract(string $userId, string $amount, string $referenceId, string $type, Collection $pointDetailForSub, int $adminId = null): array
     {
         $point = PointModel::query()
             ->where('user_id', '=', $userId)
@@ -80,7 +80,7 @@ trait PointMethods
         }
         
         // 포인트 변동 로그 저장
-        $changedLogId = $this->changedLog($userId, $point->remain_amount, $amount, $remainAmount, $referenceId, $type);
+        $changedLogId = $this->changedLog($userId, $point->remain_amount, $amount, $remainAmount, $referenceId, $type, $adminId);
 
         // 포인트 잔여 금액 업데이트
         $point->remain_amount = $remainAmount;
@@ -135,7 +135,7 @@ trait PointMethods
     /**
      * 포인트 변동 로그를 저장한다.
      */
-    public function changedLog(string $userId, string $beforeAmount, string $changedAmount, string $afterAmount, string $referenceId, string $type): int
+    public function changedLog(string $userId, string $beforeAmount, string $changedAmount, string $afterAmount, string $referenceId, string $type, int $adminId): int
     {
         $pointChangedLog = new PointChangedLog();
         $pointChangedLog->user_id = $userId;
@@ -143,7 +143,8 @@ trait PointMethods
         $pointChangedLog->before_amount = $beforeAmount;
         $pointChangedLog->changed_amount = $changedAmount;
         $pointChangedLog->after_amount = $afterAmount;
-        $pointChangedLog->type = $type; 
+        $pointChangedLog->type = $type;
+        $pointChangedLog->admin_id = $adminId;
         $pointChangedLog->save();
 
         return $pointChangedLog->id;

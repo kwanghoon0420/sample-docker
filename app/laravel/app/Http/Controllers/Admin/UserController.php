@@ -44,7 +44,8 @@ class UserController extends Controller
         }
 
         $userPoint = new UserPointEntity($user);
-        $userPoint->earn($validatedData['amount'], $expireDate);
+        $adminId = $request->user()->id; // 관리자 ID
+        $userPoint->setAdminId($adminId)->earn($validatedData['amount'], $expireDate);
 
         return redirect()->route('admin.user.list');
     }

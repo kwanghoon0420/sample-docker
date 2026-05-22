@@ -56,7 +56,7 @@ app/
 ```
 
 ### 스키마 요약
-스키마 파일:
+스키마 파일 위치치:
 ./app/laravel/database/migrations
 
 | 테이블 | 설명 |
@@ -75,6 +75,7 @@ app/
 * 사용자가 포인트 사용 시 해당 테이블 포인트를 생성된 시간 역순으로 뽑아서 사용합니다.
 * point_changed_logs 사용자의 포인트가 변화가 있을 때마다 저장됩니다.
 * point_detail_changed_logs 는 point_details 에 row 별로의 변동내역을 저장합니다.
+* 포인트 환불 시 point_details 에서 뽑아쓴 금액 그대로 하나하나 원복하며 해당 row 가 기간만료 상태라면 다시 기간만료 처리를 합니다.
 
 
 

@@ -16,10 +16,10 @@
                     <tr>
                         <th>ID</th>
                         <th class="w-1/4">사용자 이메일</th>
+                        <th>참조 ID</th>
                         <th>변동 금액</th>
                         <th>변동 타입</th>
-                        <th>수정일</th>
-                        <th>생성일</th>
+                        <th>변동일시</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,9 +27,9 @@
                         <tr>
                             <td>{{ $log->id }}</td>
                             <td><a href="">{{ $log->user?->email }}</a></td>
+                            <td>{{ $log->reference_id }}</td>
                             <td>{{ $log->formattedChangedAmount() }}</td>
                             <td>{{ $log->typeText() }}</td>
-                            <td>{{ $log->updated_at }}</td>
                             <td>{{ $log->created_at }}</td>
                         </tr>
                     @endforeach
