@@ -65,6 +65,10 @@
                             <span x-show="userPoint >= (quantity * price)">구매하기</span>
                             <span x-show="userPoint < (quantity * price)">포인트가 부족합니다</span>
                         </button>
+                    @else
+                        <button type="button" class="btn btn-primary btn-lg w-full text-lg shadow-xl shadow-primary/20" disabled>
+                            상품 준비중
+                        </button>
                     @endif
                 </form>
             </div>
