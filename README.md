@@ -56,7 +56,7 @@ app/
 ```
 
 ### 스키마 요약
-스키마 파일 위치치:
+스키마 파일 위치:
 ./app/laravel/database/migrations
 
 | 테이블 | 설명 |
