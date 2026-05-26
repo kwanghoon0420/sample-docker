@@ -1,7 +1,10 @@
 # 포인트 기반 이커머스 샘플 (Laravel)
 
 포트폴리오용으로 정리한 **상품 주문·포인트 결제·주문 상태(취소/확정)** 흐름을 포함한 Laravel 웹 애플리케이션입니다.
-어플리케이션 주소 ./app/laravel
+Github 주소: https://github.com/kwanghoon0420/sample-docker
+어플리케이션 경로: ./app/laravel
+사이트 주소: https://gwanghoon.shop
+운영서버 스택: Ubuntu22.04 + Docker + Docker Compose + FrankenPHP + php8.3 + Mysql8.0 
 
 ## 기술 스택
 
