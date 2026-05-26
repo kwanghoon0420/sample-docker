@@ -1,10 +1,10 @@
 # 포인트 기반 이커머스 샘플 (Laravel)
 
-포트폴리오용으로 정리한 **상품 주문·포인트 결제·주문 상태(취소/확정)** 흐름을 포함한 Laravel 웹 애플리케이션입니다.
-Github 주소: https://github.com/kwanghoon0420/sample-docker
-어플리케이션 경로: ./app/laravel
-사이트 주소: https://gwanghoon.shop
-운영서버 스택: Ubuntu22.04 + Docker + Docker Compose + FrankenPHP + php8.3 + Mysql8.0 
+포트폴리오용으로 정리한 **상품 주문·포인트 결제·주문 상태(취소/확정)** 흐름을 포함한 Laravel 웹 애플리케이션입니다.- 
+- Github 주소: https://github.com/kwanghoon0420/sample-docker
+- 어플리케이션 경로: ./app/laravel
+- 사이트 주소: https://gwanghoon.shop
+- 운영서버 스택: Ubuntu22.04 + Docker + Docker Compose + FrankenPHP + php8.3 + Mysql8.0 
 
 ## 기술 스택
 
@@ -35,15 +35,15 @@ Github 주소: https://github.com/kwanghoon0420/sample-docker
 | **관리자 라우트 보호** | `admin2` 그룹에 `Admin2Middleware` — `OrderActionPolicy::isAdmin()` 통과 시만 접근 |
 
 디자인 패턴에 대해 간단히 요약하자면
-주문, 상품 등에 개별적인 기능(주문취소, 상품재고 감소 등)들은 각자 엔티티에서 담당하고 서로의 규칙에 대해 간섭하지 않습니다.
-여러 엔티티가 필요한 작업은 Application Service 가 담당합니다.
-컨트롤러나 Application Service 에서 if문구를 최대한 지양하고
-필요한 판단로직이나 수행작업은 엔티티에게 위임합니다.
-이렇게 분류한 이유는 도메인 별로 책임과 역할을 명확히 하고
-컨트롤러나 Application Service 과 같은 루트 위치에서 봤을 때 이 요청은 어떤 작업을 하는지 한눈이 파악하기 쉽고
-디테일한 작업을 알고싶을 때는 엔티티에 들어가서 확인할 수 있으며
-특정 비즈니스 규칙이 변경될 때 해당 엔티티만 수정하면 되므로 유지보수성이 극대화됩니다.
-포인트 차감 및 환불 로직 수행 시 데이터의 무결성을 보장하기 위해 DB 트랜잭션 격리 수준을 고려하여 개발했습니다
+- 주문, 상품 등에 개별적인 기능(주문취소, 상품재고 감소 등)들은 각자 엔티티에서 담당하고 서로의 규칙에 대해 간섭하지 않습니다.
+- 여러 엔티티가 필요한 작업은 Application Service 가 담당합니다.
+- 컨트롤러나 Application Service 에서 if문구를 최대한 지양하고
+- 필요한 판단로직이나 수행작업은 엔티티에게 위임합니다.
+- 이렇게 분류한 이유는 도메인 별로 책임과 역할을 명확히 하고
+- 컨트롤러나 Application Service 과 같은 루트 위치에서 봤을 때 이 요청은 어떤 작업을 하는지 한눈이 파악하기 쉽고
+- 디테일한 작업을 알고싶을 때는 엔티티에 들어가서 확인할 수 있으며
+- 특정 비즈니스 규칙이 변경될 때 해당 엔티티만 수정하면 되므로 유지보수성이 극대화됩니다.
+- 포인트 차감 및 환불 로직 수행 시 데이터의 무결성을 보장하기 위해 DB 트랜잭션 격리 수준을 고려하여 개발했습니다
 
 ## 디렉터리 구조 (요약)
 ```
