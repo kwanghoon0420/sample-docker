@@ -16,7 +16,7 @@ class UserPointEntity
 {
     use PointMethods;
 
-    private PointModel $pointModel;
+    private ?PointModel $pointModel = null;
 
     private int $adminId;
 
@@ -26,7 +26,7 @@ class UserPointEntity
             throw new DomainException('사용자를 찾을 수 없습니다.');
         }
 
-        $this->pointModel = $user->point;
+        $this->pointModel = $user->point ?? null;
 
     }
 
