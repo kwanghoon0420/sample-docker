@@ -16,7 +16,7 @@ class UserPointEntity
 {
     use PointMethods;
 
-    private ?PointModel $pointModel = null;
+    private PointModel $pointModel;
 
     private int $adminId;
 
@@ -26,8 +26,22 @@ class UserPointEntity
             throw new DomainException('사용자를 찾을 수 없습니다.');
         }
 
-        $this->pointModel = $user->point ?? null;
+        $this->pointModel = $this->initPointModel();
 
+    }
+
+    // 사용자 포인트 모델 초기화
+    private function initPointModel(): PointModel
+    {
+        $piontModel = $this->user->point;
+        if(!$piontModel) {
+            $piontModel = new PointModel();
+            $piontModel->user_id = $this->user->id;
+            $piontModel->remain_amount = 0;
+            $piontModel->status = 'a';
+            $piontModel->save();
+        }
+        return $piontModel;
     }
 
     public function setAdminId(int $adminId): static
