@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EA%B8%B0%EB%B0%98-%EC%9D%B4%EC%BB%A4%EB%A8%B8%EC%8A%A4-%EC%83%98%ED%94%8C-laravel">포인트 기반 이커머스 샘플 (Laravel)</h1>
+<p>포트폴리오용으로 정리한 <strong>상품 주문·포인트 결제·주문 상태(취소/확정)</strong> 흐름을 포함한 Laravel 웹 애플리케이션입니다.-</p>
+<ul>
+<li>Github 주소: https://github.com/kwanghoon0420/sample-docker</li>
+<li>어플리케이션 경로: ./app/laravel</li>
+<li>사이트 주소: https://gwanghoon.shop</li>
+<li>운영서버 스택: Ubuntu22.04 + Docker + Docker Compose + FrankenPHP + php8.3 + Mysql8.0</li>
+</ul>
+<h2 id="%EA%B8%B0%EC%88%A0-%EC%8A%A4%ED%83%9D">기술 스택</h2>
+<ul>
+<li><strong>PHP</strong> 8.2+</li>
+<li><strong>Laravel</strong> 12</li>
+<li><strong>인증</strong>: Laravel Breeze</li>
+<li><strong>관리 UI</strong>: Filament 3 (<code>/admin</code> — 포인트 데이터 확인을 위해 설치)</li>
+<li><strong>프론트</strong>: Blade + Tailwind(DaisyUI 등 기존 구성 유지)</li>
+</ul>
+<h2 id="%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5">주요 기능</h2>
+<ul>
+<li><strong>상품</strong>: 목록·상세, 재고 기반 주문 가능 여부</li>
+<li><strong>주문</strong>: 포인트 사용 주문, 상태(<code>결제대기</code> → <code>결제완료</code> → <code>거래완료</code> / 취소·환불)</li>
+<li><strong>마이페이지</strong>: 주문 내역, 취소·확정(조건 충족 시)</li>
+<li><strong>관리자 영역 (<code>/admin2</code>)</strong>: 주문 목록, 사용자와 동일한 <strong>취소·확정</strong> 유스케이스 호출 (접근은 관리자만)</li>
+<li>현재 관리자 아이디: admin@admin 비밀번호: adminadmin</li>
+</ul>
+<h2 id="%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98--%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EC%9A%94%EC%95%BD">아키텍처 / 디자인 패턴 요약</h2>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application Service</strong></td>
+<td><code>App\Services\Order\OrderApplicationService</code> — 유스케이스(주문/취소/확정) 조율, 트랜잭션 경계</td>
+</tr>
+<tr>
+<td><strong>Command (입력 DTO)</strong></td>
+<td><code>App\Services\Order\Commands\*</code> - 요청 데이터 묶음 (Place / Cancel / Confirm)</td>
+</tr>
+<tr>
+<td><strong>Domain Entity</strong></td>
+<td><code>App\Domains\Entities\*</code> — 주문·상품·포인트 등 도메인 엔티티, 생명주기가 있는 단일객체</td>
+</tr>
+<tr>
+<td><strong>Domain Service</strong></td>
+<td><code>App\Domains\Services\*</code> — 2개 이상의 도메인이 들어가는 규칙이 필요할 때 여기에 생성 예: 특정 유저가 특정 주문건에 대한 취소 권한이 있는지</td>
+</tr>
+<tr>
+<td><strong>Domain  Query</strong></td>
+<td>App\Domains\Queries*` 상품 조회, 주문 조회(검색) 등 쿼리로직들</td>
+</tr>
+<tr>
+<td><strong>HTTP 진입</strong></td>
+<td>Controller는 Http 요청에 대한 처리, 필요한 서비스 호출, 적절한 response 를 반환하는 역할만 함.(아주 간단한 서비스 작업일 시 컨트롤러에서 직접 처리)</td>
+</tr>
+<tr>
+<td><strong>관리자 라우트 보호</strong></td>
+<td><code>admin2</code> 그룹에 <code>Admin2Middleware</code> — <code>OrderActionPolicy::isAdmin()</code> 통과 시만 접근</td>
+</tr>
+</tbody>
+</table>
+<p>디자인 패턴에 대해 간단히 요약하자면</p>
+<ul>
+<li>주문, 상품 등에 개별적인 기능(주문취소, 상품재고 감소 등)들은 각자 엔티티에서 담당하고 서로의 규칙에 대해 간섭하지 않습니다.</li>
+<li>여러 엔티티가 필요한 작업은 Application Service 가 담당합니다.</li>
+<li>컨트롤러나 Application Service 에서 if문구를 최대한 지양하고</li>
+<li>필요한 판단로직이나 수행작업은 엔티티에게 위임합니다.</li>
+<li>이렇게 분류한 이유는 도메인 별로 책임과 역할을 명확히 하고</li>
+<li>컨트롤러나 Application Service 과 같은 루트 위치에서 봤을 때 이 요청은 어떤 작업을 하는지 한눈이 파악하기 쉽고</li>
+<li>디테일한 작업을 알고싶을 때는 엔티티에 들어가서 확인할 수 있으며</li>
+<li>특정 비즈니스 규칙이 변경될 때 해당 엔티티만 수정하면 되므로 유지보수성이 극대화됩니다.</li>
+<li>포인트 차감 및 환불 로직 수행 시 데이터의 무결성을 보장하기 위해 DB 트랜잭션 격리 수준을 고려하여 개발했습니다</li>
+</ul>
+<h2 id="%EB%94%94%EB%A0%89%ED%84%B0%EB%A6%AC-%EA%B5%AC%EC%A1%B0-%EC%9A%94%EC%95%BD">디렉터리 구조 (요약)</h2>
+<pre class="hljs"><code><div>app/
+├── Domains/
+│   ├── Entities/          # 도메인 엔티티 (Order, Product, UserPoint 등)
+│   ├── Services/          # 도메인 서비스 (PointCore, OrderActionPolicy 등)
+│   └── Queries/           # 목록 조회용 쿼리 객체
+├── Services/Order/        # 주문 애플리케이션 서비스 + Commands
+├── Http/
+│   ├── Controllers/       # 웹 진입점
+│   └── Middleware/        # Admin2Middleware 등
+└── Models/                # Eloquent 모델
+</div></code></pre>
+<h3 id="%EC%8A%A4%ED%82%A4%EB%A7%88-%EC%9A%94%EC%95%BD">스키마 요약</h3>
+<p>스키마 파일 위치:
+./app/laravel/database/migrations</p>
+<table>
+<thead>
+<tr>
+<th>테이블</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>users</strong></td>
+<td>사용자 테이블</td>
+</tr>
+<tr>
+<td><strong>products</strong></td>
+<td>상품 테이블</td>
+</tr>
+<tr>
+<td><strong>orders</strong></td>
+<td>주문정보 테이블</td>
+</tr>
+<tr>
+<td><strong>points</strong></td>
+<td>사용자별 포인트 잔여금 테이블</td>
+</tr>
+<tr>
+<td><strong>point_details</strong></td>
+<td>포인트 상세내역</td>
+</tr>
+<tr>
+<td><strong>point_changed_logs</strong></td>
+<td>포인트 변동로그</td>
+</tr>
+<tr>
+<td><strong>point_detail_changed_logs</strong></td>
+<td>포인트 상세내역 변동로그</td>
+</tr>
+</tbody>
+</table>
+<p>이 포트폴리오는 포인트 시스템 위주로 설계하였습니다.</p>
+<ul>
+<li>users 테이블은 사용자별 잔여 포인트를 저장하고 사용자가 포인트 사용 시 &quot;사용중&quot; 적립금이 쌓이게 되며 확정/취소 처리할 시 해당 사용중 적립금은 사라집니다.</li>
+<li>충전된 포인트는 point_details 에 insert 가 되며 row 별로 만료시일이 존재합니다.</li>
+<li>사용자가 포인트 사용 시 해당 테이블 포인트를 생성된 시간 역순으로 뽑아서 사용합니다.</li>
+<li>point_changed_logs 사용자의 포인트가 변화가 있을 때마다 저장됩니다.</li>
+<li>point_detail_changed_logs 는 point_details 에 row 별로의 변동내역을 저장합니다.</li>
+<li>포인트 환불 시 point_details 에서 뽑아쓴 금액 그대로 하나하나 원복하며 해당 row 가 기간만료 상태라면 다시 기간만료 처리를 합니다.</li>
+</ul>
+
+</body>
+</html>

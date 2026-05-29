@@ -21,8 +21,9 @@ trait PointMethods
     {
         
         $point = PointModel::query()
-        ->where('user_id', '=', $userId)
-        ->where('status', '=', 'a') // 정상인 포인트
+            ->where('user_id', '=', $userId)
+            ->where('status', '=', 'a') // 정상인 포인트
+            ->orWhere('status', '=', 'l') // 잠금 상태의 포인트도 포함
             ->lockForUpdate()
             ->first();
         if (!$point) {

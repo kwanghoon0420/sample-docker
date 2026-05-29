@@ -6,7 +6,6 @@ namespace App\Domains\Entities;
 
 use App\Models\Order as OrderModel;
 use App\Exceptions\DomainException;
-use App\Models\Product as ProductModel;
 use App\Support\Helper;
 
 class OrderEntity

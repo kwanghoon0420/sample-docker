@@ -17,7 +17,6 @@ class UserPointEntity
     use PointMethods;
 
     private PointModel $pointModel;
-    private PointModel $pointModelIng;
 
     private int $adminId;
 
@@ -27,15 +26,8 @@ class UserPointEntity
             throw new DomainException('사용자를 찾을 수 없습니다.');
         }
 
-        // point 테이블에서 status가 i인 것을 찾아서 pointModelIng에 할당, 나머지를 pointModel에 할당 (status = i 만 따로 존재함)
-        $pointModels = PointModel::where('user_id', '=', $user->id)->get();
-        foreach($pointModels as $pointModel) {
-            if($pointModel->status == 'i') {
-                $this->pointModelIng = $pointModel;
-            } else {
-                $this->pointModel = $pointModel;
-            }
-        }
+        $this->pointModel = $user->point;
+
     }
 
     public function setAdminId(int $adminId): static
@@ -78,9 +70,7 @@ class UserPointEntity
      */
     public function getRemainPoints(): int
     {
-        return (int) PointModel::where('user_id', '=', $this->user->id)
-            ->where('status', '=', 'a')
-            ->sum('remain_amount');
+        return (int) $this->pointModel->remain_amount ?? 0;
     }
 
     /**
@@ -97,6 +87,8 @@ class UserPointEntity
         $expireDate = $expireDate->endOfDay();
 
         $this->add($this->userModel()->id, $amount, $referenceId, 'e', $expireDate, $this->getAdminId());
+
+        $this->pointModel->refresh();
     }
 
     /**
@@ -137,6 +129,8 @@ class UserPointEntity
             $point->save();
         }
 
+        $this->pointModel->refresh();
+
         return $result;
     }
 
@@ -162,6 +156,8 @@ class UserPointEntity
         if($affectedRows === 0) {
             throw new DomainException('사용 중인 포인트가 없습니다.', ['reference_id' => $referenceId, 'user_id' => $this->userModel()->id]);
         }
+
+        $this->pointModel->refresh();
     }
 
     /**
@@ -220,10 +216,12 @@ class UserPointEntity
             // 포인트 원복 후 해당 내역이 만기면 만기처리함
             $this->expire($pointDetailChangedLog->point_detail_id);
         }
+
+        $this->pointModel->refresh();
     }
 
     /**
-     * 포인트 상세 내역 만기된 경우 처리, 포인트 금액 모두 차감처리리
+     * 포인트 상세 내역 만기된 경우 처리, 포인트 금액 모두 차감처리
      */
     public function expire(int $pointDetailId): void
     {
@@ -235,5 +233,7 @@ class UserPointEntity
         if($pointDetail->expire_at < Carbon::now()) {
             $this->subtract($this->userModel()->id, $pointDetail->remain_amount, 'expire', 'x', collect([$pointDetail]), $this->getAdminId());
         }
+
+        $this->pointModel->refresh();
     }
 }

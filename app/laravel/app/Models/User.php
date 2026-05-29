@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function point(): HasOne
     {
-        return $this->hasOne(Point::class)->whereIn('status', ['a', 'l']);
+        return $this->hasOne(Point::class)->where('status', '=', 'a')->orWhere('status', '=', 'l'); // 정상 또는 잠금 상태의 포인트만 조회
     }
 }
